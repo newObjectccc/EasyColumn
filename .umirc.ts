@@ -51,7 +51,7 @@ export default defineConfig({
       path: '/component',
     },
     {
-      title: 'regExp',
+      title: 'regExp(正则库)',
       path: '/regExp',
     },
   ],
