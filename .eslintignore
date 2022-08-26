@@ -1,0 +1,10 @@
+typings
+dist/**/*
+cjs/**/*
+esm/**/*
+lib/**/*
+node_modules
+_site
+dist
+coverage
+**/*.d.ts

@@ -1,0 +1,82 @@
+{
+  "private": true,
+  "name": "en-volant",
+  "version": "0.0.1",
+  "scripts": {
+    "start": "dumi dev",
+    "docs:build": "dumi build",
+    "docs:deploy": "gh-pages -d docs-dist",
+    "build": "npm run lint && cross-env BUILD_TYPE=es father build && cross-env BUILD_TYPE=lib father build && npm run build:umd",
+    "build:umd": "tsc && vite build",
+    "dev": "tsc && cross-env ENV=dev vite",
+    "deploy": "npm run docs:build && npm run docs:deploy",
+    "prettier": "prettier --write \"**/*.{js,jsx,tsx,ts,less,md,json}\"",
+    "test": "umi-test",
+    "test:coverage": "umi-test --coverage",
+    "lint": "npm run lint:style && npm run lint:js",
+    "lint:style": "stylelint \"src/**/**/*.less\"",
+    "lint:js": "eslint src --cache --fix --ext .ts,.tsx",
+    "prepublishOnly": "npm run build"
+  },
+  "main": "cjs/index.js",
+  "module": "esm/index.js",
+  "typings": "esm/index.d.ts",
+  "files": [
+    "lib",
+    "es",
+    "dist"
+  ],
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,jsx,less,md,json}": [
+      "prettier --write"
+    ],
+    "*.ts?(x)": [
+      "prettier --parser=typescript --write"
+    ]
+  },
+  "dependencies": {
+    "antd": "4.21.5",
+    "react": "^18.0.0"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.15.1",
+    "@testing-library/react": "^13.0.0",
+    "@types/jest": "^27.0.3",
+    "@umijs/fabric": "^2.8.1",
+    "@umijs/test": "^3.0.5",
+    "@vitejs/plugin-react": "^2.0.1",
+    "babel-plugin-import": "^1.13.5",
+    "classnames": "^2.3.1",
+    "cross-env": "^7.0.3",
+    "dumi": "^1.1.0",
+    "eslint": "^8.0.0",
+    "eslint-config-airbnb": "^19.0.0",
+    "eslint-config-prettier": "^8.0.0",
+    "eslint-plugin-babel": "^5.3.0",
+    "eslint-plugin-import": "^2.21.1",
+    "eslint-plugin-jest": "^26.4.0",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-markdown": "^3.0.0",
+    "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-react-hooks": "^4.1.2",
+    "eslint-plugin-unicorn": "^43.0.0",
+    "eslint-webpack-plugin": "^3.2.0",
+    "father": "^4.0.0-rc.2",
+    "gh-pages": "^3.0.0",
+    "less": "^4.1.3",
+    "lint-staged": "^10.0.7",
+    "postcss-less": "^6.0.0",
+    "prettier": "^2.2.1",
+    "stylelint": "^14.11.0",
+    "stylelint-config-prettier": "^9.0.3",
+    "stylelint-config-rational-order": "^0.1.2",
+    "stylelint-config-standard": "^28.0.0",
+    "stylelint-webpack-plugin": "^3.3.0",
+    "vite": "^3.0.9",
+    "vite-plugin-importer": "^0.2.5",
+    "yorkie": "^2.0.0"
+  }
+}
