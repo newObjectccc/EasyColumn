@@ -50,6 +50,10 @@ export default defineConfig({
       title: 'component',
       path: '/component',
     },
+    {
+      title: 'regExp',
+      path: '/regExp',
+    },
   ],
   devServer: {
     port: 8008,
