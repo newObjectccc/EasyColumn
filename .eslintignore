@@ -8,3 +8,4 @@ _site
 dist
 coverage
 **/*.d.ts
+**/*.config.ts

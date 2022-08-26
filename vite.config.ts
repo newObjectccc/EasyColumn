@@ -30,6 +30,11 @@ if (isDev) {
 } else {
   config = defineConfig({
     build: {
+      terserOptions: {
+        compress: true,
+        output: {
+        },
+      },
       lib: {
         entry: resolve(__dirname, 'src/index.ts'),
         name: 'en-volant',
