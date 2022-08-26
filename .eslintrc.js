@@ -18,7 +18,8 @@ module.exports = {
       version: 'detect',
     },
   },
-  parserOptions: { "project": ["./tsconfig.json"] },
+  // parserOptions: { "project": ["./tsconfig.json"] },
+  parser: '@typescript-eslint/parser',
   plugins: ['react', 'babel', '@typescript-eslint', 'react-hooks', 'unicorn', 'markdown'],
   // https://github.com/typescript-eslint/typescript-eslint/issues/46#issuecomment-470486034
   overrides: [
@@ -36,6 +37,8 @@ module.exports = {
       // processor on any Markdown files you want to lint.
       files: ['src/**/*.md'],
       processor: 'markdown/markdown',
+      rules: {
+      },
     },
   ],
   rules: {
@@ -61,8 +64,9 @@ module.exports = {
     'react/no-unused-class-component-methods': 0,
     'import/extensions': 0,
     'import/no-cycle': 0,
+    'import/no-unresolved': 'off',
     'import/no-extraneous-dependencies': [
-      'off',
+      'warn',
       {
         devDependencies: [
           'scripts/**',
@@ -108,6 +112,5 @@ module.exports = {
     'no-undef': 0,
   },
   globals: {
-    gtag: true,
   },
 };

@@ -3,7 +3,7 @@ import type { SelectProps} from 'antd';
 import {Select, ConfigProvider} from 'antd'
 import type { DefaultOptionType } from "antd/lib/select";
 import locale from './locale'
-import CONSTANT from '../const'
+import CONSTANT from '../../const'
 
 const {DEFAULT_LANG} = CONSTANT
 export interface BigSelectProps {
