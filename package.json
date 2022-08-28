@@ -1,7 +1,6 @@
 {
-  "private": true,
   "name": "en-volant",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "scripts": {
     "start": "dumi dev",
     "docs:build": "dumi build",
@@ -39,7 +38,7 @@
   },
   "dependencies": {
     "antd": "4.21.5",
-    "react": "^18.0.0"
+    "react": "^17.0.2"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.15.1",
