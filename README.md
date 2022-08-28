@@ -38,3 +38,18 @@ Build doc: ,
 ```bash
 $ npm run docs:build
 ```
+
+按需加载配置： bable-loader
+
+```JSON
+ [
+  'import',
+  {
+    libraryName: 'en-volant',
+    libraryDirectory: 'esm/component',
+    "camel2DashComponentName": false,
+    // style: 'css',
+  },
+  'en-volant',
+],
+```

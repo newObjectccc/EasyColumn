@@ -1,6 +1,6 @@
 {
   "name": "en-volant",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "scripts": {
     "start": "dumi dev",
     "docs:build": "dumi build",
@@ -22,7 +22,7 @@
   "typings": "esm/index.d.ts",
   "files": [
     "lib",
-    "es",
+    "esm",
     "dist"
   ],
   "gitHooks": {
