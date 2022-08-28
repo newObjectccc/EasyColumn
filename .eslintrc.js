@@ -66,7 +66,7 @@ module.exports = {
     'import/no-cycle': 0,
     'import/no-unresolved': 'off',
     'import/no-extraneous-dependencies': [
-      'warn',
+      'off',
       {
         devDependencies: [
           'scripts/**',

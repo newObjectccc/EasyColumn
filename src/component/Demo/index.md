@@ -8,7 +8,7 @@ group:
   title: 组件
 ---
 
-## BigSelect 
+## BigSelect
 专为有长列表optioin选项的`select`开发
 
 Demo:
@@ -16,18 +16,11 @@ Demo:
 ```tsx
 import React from 'react';
 import { Demo } from 'en-volant';
-import {Form} from 'antd'
 
-export default () => {
-  
-  return (
+export default () => (
     <Demo />
-  )
-  
-  
-};
+  );
 ```
 
-## API 
-[其他属性同antd Select](https://ant.design/components/select-cn/#API)
+## API
 <API hideTitle/>

@@ -55,5 +55,7 @@ export default () => {
 ```
 
 ## API
-[其他属性同antd Select](https://ant.design/components/select-cn/#API)
 <API hideTitle/>
+
+[其他属性同antd Select](https://ant.design/components/select-cn/#API)
+
