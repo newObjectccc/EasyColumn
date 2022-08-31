@@ -94,6 +94,7 @@ const BasicForm = ({
   // 需要在DOM更新前的一次性操作
   React.useLayoutEffect(() => {
     if (isMouted.current) {
+      // formItemList
       updateFormStoreValueByFormItemList();
     }
   }, [formItemList]);
