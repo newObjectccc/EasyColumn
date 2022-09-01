@@ -43,6 +43,7 @@ const formItemList = [
   {
     name: "userName",
     label: "姓名",
+    rules: [{ required: true, message: "用户姓名必填" }],
     antdComponentName: "Input",
     antdComponentProps: {
       placeholder: "请输入姓名",
@@ -51,6 +52,7 @@ const formItemList = [
   {
     name: "userAge",
     label: "年龄",
+    rules: [{ required: true, message: "用户年龄必填" }],
     customRender: (form) => (
       <InputNumber min={1} max={200} placeholder="请输入" />
     ),
@@ -58,6 +60,7 @@ const formItemList = [
   {
     name: "skills",
     label: "技能等级",
+    initialValue: 0,
     antdComponentName: "Slider",
     antdComponentProps: {
       marks: {
@@ -89,7 +92,18 @@ const formItemList = [
   {
     name: "judgement",
     label: "自我评价",
+    rules: [{ required: true, message: "用户自我评价必填" }],
     customRender: (form) => <Input placeholder="请输入" />,
+  },
+  {
+    label: " ",
+    colon: false,
+    wrapperCol: { offset: 3 },
+    customRender: (form) => (
+      <Button type="primary" htmlType="submit">
+        提交
+      </Button>
+    ),
   },
 ];
 const formItemLayout = {
