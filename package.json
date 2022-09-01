@@ -1,22 +1,6 @@
 {
   "name": "en-volant",
   "version": "0.0.4",
-  "scripts": {
-    "start": "dumi dev",
-    "docs:build": "dumi build",
-    "docs:deploy": "gh-pages -d docs-dist",
-    "build": "npm run lint && cross-env BUILD_TYPE=es father build && cross-env BUILD_TYPE=lib father build && npm run build:umd",
-    "build:umd": "tsc && vite build",
-    "dev": "tsc && cross-env ENV=dev vite",
-    "deploy": "npm run docs:build && npm run docs:deploy",
-    "prettier": "prettier --write \"**/*.{js,jsx,tsx,ts,less,md,json}\"",
-    "test": "umi-test",
-    "test:coverage": "umi-test --coverage",
-    "lint": "npm run lint:style && npm run lint:js",
-    "lint:style": "stylelint \"src/**/**/*.less\"",
-    "lint:js": "eslint src --cache --fix --ext .ts,.tsx",
-    "prepublishOnly": "npm run build"
-  },
   "main": "cjs/index.js",
   "module": "esm/index.js",
   "typings": "esm/index.d.ts",
@@ -25,7 +9,22 @@
     "esm",
     "dist"
   ],
-  
+  "scripts": {
+    "build": "npm run lint && cross-env BUILD_TYPE=es father build && cross-env BUILD_TYPE=lib father build && npm run build:umd",
+    "build:umd": "tsc && vite build",
+    "deploy": "npm run docs:build && npm run docs:deploy",
+    "dev": "tsc && cross-env ENV=dev vite",
+    "docs:build": "dumi build",
+    "docs:deploy": "gh-pages -d docs-dist",
+    "lint": "npm run lint:style && npm run lint:js",
+    "lint:js": "eslint src --cache --fix --ext .ts,.tsx",
+    "lint:style": "stylelint \"src/**/**/*.less\"",
+    "prepublishOnly": "npm run build",
+    "prettier": "prettier --write \"**/*.{js,jsx,tsx,ts,less,md,json}\"",
+    "start": "dumi dev",
+    "test": "umi-test",
+    "test:coverage": "umi-test --coverage"
+  },
   "lint-staged": {
     "*.{js,jsx,less,md,json}": [
       "prettier --write"
@@ -59,7 +58,7 @@
     "eslint-plugin-markdown": "^3.0.0",
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.1.2",
-    "eslint-plugin-unicorn": "^43.0.0",
+    "eslint-plugin-unicorn": "^43.0.2",
     "eslint-webpack-plugin": "^3.2.0",
     "father": "^4.0.0-rc.2",
     "gh-pages": "^3.0.0",
@@ -75,5 +74,8 @@
     "vite": "^3.0.9",
     "vite-plugin-importer": "^0.2.5",
     "yorkie": "^2.0.0"
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
   }
 }
