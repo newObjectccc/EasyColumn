@@ -20,19 +20,19 @@ import { stringHelper } from "../../_util";
 export type CustomFormItemType = {
   antdComponentName?: string;
   antdComponentProps?: {
-    children?: React.ReactElement;
+    children?: React.ReactNode;
     [key: string]: unknown;
   };
 };
 export type FormItemType = {
   customRender?: (
     itemProps: Omit<FormItemType, keyof CustomFormItemType>
-  ) => React.ReactElement;
+  ) => React.ReactNode;
   name?: NamePath & React.Key;
   rules?: any;
   dependencies?: any;
   colon?: boolean;
-  extra?: React.ReactElement;
+  extra?: React.ReactNode;
   getValueFromEvent?: (...args: any[]) => any;
   getValueProps?: (value: any) => any;
   [key: string]: any;
@@ -44,7 +44,7 @@ export interface BasicFormPropsType extends Callbacks {
    * @default          React.RefObject<T>
    */
   form: any;
-  children?: React.ReactElement;
+  children?: React.ReactNode;
   /**
    * @description      配置化表单列表
    * @default          undefined
@@ -53,7 +53,7 @@ export interface BasicFormPropsType extends Callbacks {
 }
 
 // antd Componet Map
-const componentMap: Map<string, React.ReactElement> = new Map([
+const componentMap: Map<string, React.ReactNode> = new Map([
   ["Select", Select],
   ["Input", Input],
   ["TimePicker", TimePicker],
@@ -111,7 +111,7 @@ const BasicForm = ({
   // 生成 Form.Item
   const generateFormItemByFormItemList = React.useMemo(
     () =>
-      formItemList?.map((item: FormItemType): React.ReactElement => {
+      formItemList?.map((item: FormItemType): React.ReactNode => {
         const {
           antdComponentName,
           customRender,
