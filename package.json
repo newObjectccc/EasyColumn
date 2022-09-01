@@ -25,14 +25,6 @@
     "test": "umi-test",
     "test:coverage": "umi-test --coverage"
   },
-  "lint-staged": {
-    "*.{js,jsx,less,md,json}": [
-      "prettier --write"
-    ],
-    "*.ts?(x)": [
-      "prettier --parser=typescript --write"
-    ]
-  },
   "dependencies": {
     "antd": "4.21.5",
     "react": "^17.0.2"
@@ -74,8 +66,5 @@
     "vite": "^3.0.9",
     "vite-plugin-importer": "^0.2.5",
     "yorkie": "^2.0.0"
-  },
-  "gitHooks": {
-    "pre-commit": "lint-staged"
   }
 }
