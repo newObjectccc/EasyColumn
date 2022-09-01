@@ -122,7 +122,7 @@ const BasicForm = ({
         const antdComponent =
           antdComponentName &&
           (componentMap.get(
-            stringHelper.toFirstWordsUpper(antdComponentName) // 首字母大写
+            stringHelper.toFirstWordsUpper(antdComponentName), // 首字母大写
           ) ??
             null);
         // generate Component with Form.Item children
@@ -131,7 +131,7 @@ const BasicForm = ({
             ? React.createElement(
                 antdComponent as any,
                 antdComponentProps,
-                antdComponentProps?.children // 可通过 children 字段设置组件
+                antdComponentProps?.children, // 可通过 children 字段设置组件
               )
             : customRender?.(restItemProps)) ?? null;
         // generate Component with Form.Item
@@ -141,12 +141,12 @@ const BasicForm = ({
             ...restItemProps,
             key: restItemProps.name ?? btoa(customRender!.toString()),
           }, // btoa(customRender!.toString()) 若没有 name 则根据 customRender 生成 base64 编码的 key
-          formItemChildren // 传入 antd 组件
+          formItemChildren, // 传入 antd 组件
         );
         // return to render Form children
         return retRes;
       }),
-    [formItemList] // formItemList 通过变化控制渲染逻辑
+    [formItemList], // formItemList 通过变化控制渲染逻辑
   );
 
   // Mounted
@@ -158,7 +158,7 @@ const BasicForm = ({
   return React.createElement(
     Form,
     mergedProps(),
-    children || generateFormItemByFormItemList
+    children || generateFormItemByFormItemList,
   ) as unknown as React.FC<BasicFormPropsType>;
 };
 
