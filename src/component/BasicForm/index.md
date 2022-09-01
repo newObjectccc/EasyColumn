@@ -11,12 +11,14 @@ group:
 ### BasicForm
 
 配置式表单，通过配置或操作表单的 formItemList 来动态的操作表单
+如果你使用 customRender 渲染组件，建议将组件进行逻辑封装并处理 onChange 和 value 的逻辑
+因为 antd 的 Form 对于添加了 name 属性的 Form.Item 进行 onChange 和 value 来实现状态管理的，除非你并不打算用 Form Store 来管理表单项的值
 
 Demo:
 
 ```tsx
 import React from "react";
-import { Form, Input, Button, InputNumber } from "antd";
+import { Form, Input, Button, InputNumber, PageHeader } from "antd";
 import { BasicForm } from "en-volant";
 
 const formItemList = [
@@ -67,6 +69,22 @@ const formItemList = [
         100: "F",
       },
     },
+  },
+  {
+    name: "btn",
+    label: " ",
+    colon: false,
+    customRender: (form) => (
+      <Button onClick={() => alert("嘻嘻嘻")}>可以自定义添加一个按钮</Button>
+    ),
+  },
+  {
+    name: "subtitle",
+    label: " ",
+    colon: false,
+    customRender: (form) => (
+      <PageHeader title="子标题" subTitle="或者你想要自定义添加一个子标题" />
+    ),
   },
   {
     name: "judgement",
@@ -153,5 +171,31 @@ export default () => {
 ## API
 
 <API hideTitle />
+
+```javascript
+  // 对应具体的 Antd 组件的属性
+  export type CustomFormItemType = {
+    antdComponentName?: string;
+    antdComponentProps?: {
+      children?: React.ReactElement;
+      [key: string]: unknown; // 这一层的属性都会编译到具体的 Antd 的组件上
+    };
+  };
+
+  // 对应 Form.Item 上的属性
+  export type FormItemType = {
+    customRender?: (
+      itemProps: Omit<FormItemType, keyof CustomFormItemType>
+    ) => React.ReactElement;
+    name?: NamePath & React.Key;
+    rules?: any;
+    dependencies?: any;
+    colon?: boolean;
+    extra?: React.ReactElement;
+    getValueFromEvent?: (...args: any[]) => any;
+    getValueProps?: (value: any) => any;
+    [key: string]: any;  // 这一层的属性都会编译到 Form.Item 上
+  } & CustomFormItemType
+```
 
 [其他属性同 antd Form](https://ant.design/components/select-cn/#API)
