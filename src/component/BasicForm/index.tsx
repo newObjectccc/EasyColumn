@@ -122,7 +122,7 @@ const BasicForm = ({
         const antdComponent =
           antdComponentName &&
           (componentMap.get(
-            stringHelper.toFirstWordsUpper(antdComponentName)
+            stringHelper.toFirstWordsUpper(antdComponentName) // 首字母大写
           ) ??
             null);
         // generate Component with Form.Item children
@@ -131,19 +131,19 @@ const BasicForm = ({
             ? React.createElement(
                 antdComponent as any,
                 antdComponentProps,
-                antdComponentProps?.children
+                antdComponentProps?.children // 可通过 children 字段设置组件
               )
             : customRender?.(restItemProps)) ?? null;
         // generate Component with Form.Item
         const retRes = React.createElement(
           Form.Item,
           { ...restItemProps, key: restItemProps.name },
-          formItemChildren
+          formItemChildren // 传入 antd 组件
         );
         // return to render Form children
         return retRes;
       }),
-    [formItemList]
+    [formItemList] // formItemList 通过变化控制渲染逻辑
   );
 
   // Mounted
