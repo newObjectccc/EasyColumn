@@ -52,7 +52,7 @@ export interface BasicFormPropsType extends Callbacks {
   formItemList: FormItemType[];
 }
 
-// antd componet map
+// antd Componet Map
 const componentMap: Map<string, React.ReactElement> = new Map([
   ["Select", Select],
   ["Input", Input],
@@ -74,7 +74,7 @@ const BasicForm = ({
   children,
   ...restProps
 }: BasicFormPropsType): React.FC<BasicFormPropsType> => {
-  // is Mouted
+  // is Mouted status
   const isMouted = React.useRef(false);
 
   // 根据 formItemList 变化重置 Form Store
