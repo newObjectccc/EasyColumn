@@ -1,38 +1,33 @@
-import { defineConfig } from 'dumi';
-import chalk from 'chalk';
-import { readdirSync } from 'fs';
-import { join } from 'path';
-import ESLintPlugin from 'eslint-webpack-plugin'
-import StylelintPlugin from 'stylelint-webpack-plugin'
+import { defineConfig } from "dumi";
+import chalk from "chalk";
+import { readdirSync } from "fs";
+import { join } from "path";
+import ESLintPlugin from "eslint-webpack-plugin";
+import StylelintPlugin from "stylelint-webpack-plugin";
 
 export default defineConfig({
-  title: 'en-volant',
-  favicon:
-    'http://dohko.hw.shop.hualala.com/images/3f58b70b.gif',
-  logo: 'http://dohko.hw.shop.hualala.com/images/3f58b70b.gif',
-  outputPath: 'docs-dist',
-  mode: 'site',
+  title: "en-volant",
+  favicon: "http://dohko.hw.shop.hualala.com/images/3f58b70b.gif",
+  logo: "http://dohko.hw.shop.hualala.com/images/3f58b70b.gif",
+  outputPath: "docs-dist",
+  mode: "site",
   // mfsu: {},
-  resolve: {
-  },
+  resolve: {},
   chainWebpack(config) {
-    config.
-      plugin('eslintPlugin')
-          .use(ESLintPlugin, [{
-            fix: true,
-            extensions: ['ts', 'tsx'],
-            context: join(__dirname, './src')
-          }]);
+    config.plugin("eslintPlugin").use(ESLintPlugin, [
+      {
+        // fix: true,
+        extensions: ["ts", "tsx"],
+        context: join(__dirname, "./src"),
+      },
+    ]);
 
-     config.
-      plugin('styleLintPlugin')
-          .use(
-            StylelintPlugin,
-            [{
-              extensions: ['less'],
-              fix: true,
-            }]
-          )
+    config.plugin("styleLintPlugin").use(StylelintPlugin, [
+      {
+        extensions: ["less"],
+        // fix: true,
+      },
+    ]);
   },
   apiParser: {
     // 自定义属性过滤配置，也可以是一个函数，用法参考：https://github.com/styleguidist/react-docgen-typescript/#propfilter
@@ -47,12 +42,12 @@ export default defineConfig({
   },
   navs: [
     {
-      title: 'component',
-      path: '/component',
+      title: "component",
+      path: "/component",
     },
     {
-      title: 'regExp(正则库)',
-      path: '/regExp',
+      title: "regExp(正则库)",
+      path: "/regExp",
     },
   ],
   devServer: {
