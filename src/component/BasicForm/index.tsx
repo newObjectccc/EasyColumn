@@ -14,7 +14,6 @@ import {
   Checkbox,
   Transfer,
 } from "antd";
-import type { NamePath, Callbacks } from "rc-field-form/lib/interface";
 import { stringHelper } from "../../_util";
 
 export type CustomFormItemType = {
@@ -28,7 +27,7 @@ export type FormItemType = {
   customRender?: (
     itemProps: Omit<FormItemType, keyof CustomFormItemType>
   ) => React.ReactNode;
-  name?: NamePath & React.Key;
+  name?: string | number | (string | number)[] & React.Key;
   rules?: any;
   dependencies?: any;
   colon?: boolean;
@@ -38,18 +37,19 @@ export type FormItemType = {
   [key: string]: any;
 } & CustomFormItemType;
 
-export interface BasicFormPropsType extends Callbacks {
+export interface BasicFormPropsType {
   /**
    * @description      表单实例
    * @default          React.RefObject<T>
    */
-  form: any;
+  form?: any;
   children?: React.ReactNode;
   /**
    * @description      配置化表单列表
    * @default          undefined
    */
   formItemList?: FormItemType[];
+  [key: string]: any
 }
 
 // antd Componet Map
@@ -67,6 +67,7 @@ const componentMap: Map<string, React.ReactNode> = new Map([
   ["Checkbox", Checkbox],
   ["Transfer", Transfer],
 ] as any);
+
 // BasicForm Componet
 const BasicForm = ({
   formItemList,
