@@ -28,6 +28,7 @@ specifiers:
   gh-pages: ^3.0.0
   less: ^4.1.3
   lint-staged: ^10.0.7
+  mockjs: ^1.1.0
   postcss-less: ^6.0.0
   prettier: ^2.2.1
   react: ^17.0.2
@@ -71,6 +72,7 @@ devDependencies:
   gh-pages: 3.2.3
   less: 4.1.3
   lint-staged: 10.5.4
+  mockjs: 1.1.0
   postcss-less: 6.0.0
   prettier: 2.7.1
   stylelint: 14.11.0
@@ -10629,6 +10631,13 @@ packages:
     hasBin: true
     dependencies:
       minimist: 1.2.6
+    dev: true
+
+  /mockjs/1.1.0:
+    resolution: {integrity: sha1-5qDDeOkZBtuv8gkRzAJzs8fXWwY=}
+    hasBin: true
+    dependencies:
+      commander: 9.2.0
     dev: true
 
   /moment/2.29.4:

@@ -49,7 +49,7 @@ export interface BasicFormPropsType extends Callbacks {
    * @description      配置化表单列表
    * @default          undefined
    */
-  formItemList: FormItemType[];
+  formItemList?: FormItemType[];
 }
 
 // antd Componet Map
@@ -73,7 +73,8 @@ const BasicForm = ({
   form,
   children,
   ...restProps
-}: BasicFormPropsType): React.FC<BasicFormPropsType> => {
+}: BasicFormPropsType) => {
+  console.log("BasicForm function is excuting ...")
   // is Mouted status
   const isMouted = React.useRef(false);
 
@@ -159,7 +160,7 @@ const BasicForm = ({
     Form,
     mergedProps(),
     children || generateFormItemByFormItemList,
-  ) as unknown as React.FC<BasicFormPropsType>;
+  );
 };
 
 export default BasicForm;

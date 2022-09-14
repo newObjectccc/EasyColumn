@@ -9,3 +9,6 @@ export function isPromise(val: any): val is Promise<any> {
     typeof val.catch === 'function'
   )
 }
+export function isFunction(fn: any): fn is Function {
+  return typeof fn === 'function'
+}
