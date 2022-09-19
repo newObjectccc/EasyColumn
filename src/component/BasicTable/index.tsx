@@ -1,8 +1,8 @@
 import React from "react";
-import type { ColumnsType } from "antd";
 import { Table, Form } from "antd";
 import BasicForm from "../BasicForm";
 import type { BasicFormPropsType, FormItemType } from "../BasicForm"
+import { useTablePagination } from "./hook";
 
 export interface BasicTablePropsType extends React.FunctionComponent {
   /**
@@ -37,9 +37,14 @@ export interface BasicTablePropsType extends React.FunctionComponent {
   formColumns?: FormItemType[];
   /**
    * @description      表格列的配置，同 antd Table 的  columns
-   * @default          ColumnsType
+   * @default          ColumnsType antd
    */
-  tableColumns?: ColumnsType;
+  tableColumns?: any;
+  /**
+   * @description      是否显示内置 ConfirmGroup 组件
+   * @default          undefined
+   */
+   formHoCs?: ((form: typeof BasicForm) => (props: any) => React.ReactElement<any>)[];
   /**
    * @description      支持所有 antd Table 的属性
    * @default          (p: Object) => Promise<unkonwn[]>
@@ -47,7 +52,7 @@ export interface BasicTablePropsType extends React.FunctionComponent {
   [key: string]: any;
 }
 
-const BasicTable = ({ apiFn, dataSource, formColumns, tableColumns, MiddleComponent, formProps, beforeRequestQueue = [], afterResponseQueue = [], children = [], ...restProps }: BasicTablePropsType, ref: React.Ref<unknown>) => {
+const BasicTable = ({ formHoCs, apiFn, dataSource, formColumns, tableColumns, MiddleComponent, formProps, beforeRequestQueue = [], afterResponseQueue = [], children = [], ...restProps }: BasicTablePropsType, ref: React.Ref<unknown>) => {
   // is Mouted
   const isMouted = React.useRef<boolean>(false);
   // 请求参数
@@ -56,9 +61,13 @@ const BasicTable = ({ apiFn, dataSource, formColumns, tableColumns, MiddleCompon
   const [formStore] = Form.useForm()
   // table展示数据  默认展示 dataSource 传入的数据
   const [tableSource, setTableSource] = React.useState<unknown[]>(dataSource ?? [])
+  // 使用 pagination 钩子
+  const {pagination} = restProps
+  const [pageNo, pageSize, mergedPagination] = useTablePagination(pagination)
+
   // 请求数据方法
-  const fetchHandler = React.useCallback(async () => {
-    let fetchParams = apiParams
+  const fetchHandler = async () => {
+    let fetchParams = {...apiParams, pageNo, pageSize}
 
     if (beforeRequestQueue.length) {
       // 提供修改参数的功能
@@ -80,7 +89,7 @@ const BasicTable = ({ apiFn, dataSource, formColumns, tableColumns, MiddleCompon
     }
     // 设置 table 数据
     setTableSource(res)
-  }, [apiFn])
+  }
 
   // 发起请求
   React.useEffect(() => {
@@ -90,7 +99,7 @@ const BasicTable = ({ apiFn, dataSource, formColumns, tableColumns, MiddleCompon
     }
     // 组件加载完成之后
     fetchHandler()
-  }, [apiParams, fetchHandler])
+  }, [apiParams, pageNo, pageSize])
 
   React.useImperativeHandle(ref, () => ({
     todo: setApiParams,
@@ -98,35 +107,49 @@ const BasicTable = ({ apiFn, dataSource, formColumns, tableColumns, MiddleCompon
 
   // 处理 Table 的 props
   const generateTableByMergedProps = React.useCallback(() => ({
-    key: 'table',
+    key: '#__table__',
     ...restProps,
+    pagination: mergedPagination,
     columns: tableColumns,
     dataSource: tableSource as Array<any>,
   }), [tableSource, tableColumns])
 
   // 处理 Form 的 props
   const generateFormByMergedProps = React.useCallback(() => ({
-    key: 'form',
+    key: '#__form__',
     layout: 'inline',
     ...formProps,
+    // 覆写 onFinish 监听  Form 值更新 apiParams
+    onFinish: (values: {[key: string]: any}) => {
+      setApiParams(values)
+      formProps?.onFinish?.(values)
+    },
     formItemList: formColumns,
     form: formStore,
   }), [formProps, formColumns])
 
+  // generate BasicForm with HoCs
+  const BasicFormMergedHoCs = React.useMemo(()=> {
+    let mergedHoCs = BasicForm
+    if (Array.isArray(formHoCs) && formHoCs.length > 0) {
+      formHoCs.forEach(formHoC => {
+        mergedHoCs = formHoC(mergedHoCs) as typeof BasicForm
+      })
+    }
+    return mergedHoCs
+  }, [formHoCs])
+
   // 生成 TableWithForm 组件
-  const TableWithForm = React.useMemo(() => {
-    console.log("TableWithForm ====>")
-    return [
-      React.createElement(BasicForm, generateFormByMergedProps()),
+  const TableWithForm = React.useMemo(() => [
+      React.createElement(BasicFormMergedHoCs, generateFormByMergedProps()),
       MiddleComponent || null,
       React.createElement(Table, generateTableByMergedProps()),
     ]
-  }
-    , [generateTableByMergedProps, generateFormByMergedProps])
+    , [generateTableByMergedProps, BasicFormMergedHoCs])
 
   // TableWithForm with props => BasicTable 组件
-  console.log(' BasicTable function excuting ... ', generateFormByMergedProps(), formColumns)
   return React.createElement(React.Fragment, {}, [...TableWithForm, ...children])
 }
 
 export default React.forwardRef(BasicTable)
+export { useTablePagination }
