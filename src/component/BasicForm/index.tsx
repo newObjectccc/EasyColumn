@@ -75,7 +75,6 @@ const BasicForm = ({
   children,
   ...restProps
 }: BasicFormPropsType) => {
-  console.log("BasicForm function is excuting ...")
   // is Mouted status
   const isMouted = React.useRef(false);
 
@@ -141,7 +140,7 @@ const BasicForm = ({
           Form.Item,
           {
             ...restItemProps,
-            key: restItemProps.name ?? btoa(customRender!.toString()),
+            key: restItemProps.name ?? btoa(encodeURIComponent(customRender!.toString())), // btoa 在 chrome下参数里有非ASCII字符会崩溃，所以用 encodeURIComponent 转义一次
           }, // btoa(customRender!.toString()) 若没有 name 则根据 customRender 生成 base64 编码的 key
           formItemChildren, // 传入 antd 组件
         );
