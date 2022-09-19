@@ -15,6 +15,7 @@ import {
   Transfer,
 } from "antd";
 import { stringHelper } from "../../_util";
+import {withConfirmBasicFormHoC} from './HOC'
 
 export type CustomFormItemType = {
   antdComponentName?: string;
@@ -164,3 +165,4 @@ const BasicForm = ({
 };
 
 export default BasicForm;
+export { withConfirmBasicFormHoC }
