@@ -12,7 +12,7 @@ export interface ConfirmBasicFormType extends BasicFormPropsType {
   [key: string]: any
 }
 
-
+// 这个组件基本只在 withConfirmBasicFormHoC 使用，所以放在这里
 const ConfirmGroup = ({onReset, form, confirmWrapper}: ConfirmBasicFormType) => {
   const [textMap] = useLocale(locale)
   // 支持自定义 Wrapper
@@ -29,9 +29,9 @@ const ConfirmGroup = ({onReset, form, confirmWrapper}: ConfirmBasicFormType) => 
   return confirmComponent
 }
 
-
+// 提供预设的 提交和重置 按钮的 BasicForm
 export const withConfirmBasicFormHoC = (basicForm: React.FC<any>)  => (customProps: ConfirmBasicFormType) => {
-    const {onSubmit, onReset, form, confirmWrapper, formItemList = [], ...restProps} = customProps
+    const {onSubmit, onFinish, onReset, form, confirmWrapper, formItemList = [], ...restProps} = customProps
 
     const formItemListWithConfirm = [...formItemList, {
       key: '#__confirm__',
@@ -41,7 +41,8 @@ export const withConfirmBasicFormHoC = (basicForm: React.FC<any>)  => (customPro
 
     const onFinishHandler = React.useCallback((values: unknown) => {
       onSubmit?.(values)
-    }, [onSubmit])
+      onFinish?.(values)
+    }, [onSubmit, onFinish])
 
     return React.createElement(basicForm, {...restProps, form, formItemList: formItemListWithConfirm, onFinish: onFinishHandler})
   }
