@@ -133,7 +133,9 @@ const BasicTable = ({ formHoCs, apiFn, dataSource, formColumns, tableColumns, Mi
     let mergedHoCs = BasicForm
     if (Array.isArray(formHoCs) && formHoCs.length > 0) {
       formHoCs.forEach(formHoC => {
-        mergedHoCs = formHoC(mergedHoCs) as typeof BasicForm
+        if (typeof formHoC === 'function') {
+          mergedHoCs = formHoC(mergedHoCs) as typeof BasicForm
+        }
       })
     }
     return mergedHoCs
