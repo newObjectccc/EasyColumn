@@ -47,6 +47,7 @@ export default () =>{
         "name": "@cname",
         "age|18-38": 38,
         "score|1-100": 100,
+        "id|+1": 1,
       }],
     })
     return new Promise((res, rej) => {res(data.list)})
@@ -85,7 +86,7 @@ export default () =>{
 
   return (
     <TableWithDefaultIndexColumn
-      rowKey="name"
+      rowKey="id"
       ref={tableRef}
       apiFn={fetchData}
       formProps={{
@@ -120,6 +121,7 @@ export default () =>{
         "name": "@cname",
         "age|18-38": 38,
         "score|1-100": 100,
+        "id|+1": 1,
       }],
     })
     return new Promise((res, rej) => {res(data.list)})
@@ -158,7 +160,7 @@ export default () =>{
 
   return (
     <BasicTable
-      rowKey="name"
+      rowKey="id"
       ref={tableRef}
       apiFn={fetchData}
       formProps={{

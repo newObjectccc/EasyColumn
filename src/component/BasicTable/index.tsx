@@ -63,14 +63,14 @@ const BasicTable = ({ formHoCs, apiFn, dataSource, formColumns, tableColumns, Mi
   const [tableSource, setTableSource] = React.useState<unknown[]>(dataSource ?? [])
   // 使用 pagination 钩子
   const {pagination} = restProps
-  const [pageNo, pageSize, mergedPagination] = useTablePagination(pagination)
+  const [pageNo, pageSize, mergedPagination, setPageStat] = useTablePagination(pagination)
 
   // 请求数据方法
   const fetchHandler = async () => {
     let fetchParams = {...apiParams, pageNo, pageSize}
 
+    // 提供修改参数的功能
     if (beforeRequestQueue.length) {
-      // 提供修改参数的功能
       // eslint-disable-next-line no-restricted-syntax
       for await (const rqFn of beforeRequestQueue) {
         fetchParams = await rqFn(fetchParams)
@@ -79,8 +79,8 @@ const BasicTable = ({ formHoCs, apiFn, dataSource, formColumns, tableColumns, Mi
     // fetch data
     let res = await apiFn?.(fetchParams)
 
+    // 提供修改接口返回值的功能
     if (afterResponseQueue.length) {
-      // 提供修改接口返回值的功能
       // eslint-disable-next-line no-restricted-syntax
       for await (const rpFn of afterResponseQueue) {
         // eslint-disable-next-line no-loop-func, no-return-assign
@@ -119,9 +119,13 @@ const BasicTable = ({ formHoCs, apiFn, dataSource, formColumns, tableColumns, Mi
     key: '#__form__',
     layout: 'inline',
     ...formProps,
-    // 覆写 onFinish 监听  Form 值更新 apiParams
+    // 覆写 onFinish
     onFinish: (values: {[key: string]: any}) => {
+      // 重置页码为 1
+      setPageStat(1)
+      // 监听  Form 值更新 apiParams
       setApiParams(values)
+      // 向上触发
       formProps?.onFinish?.(values)
     },
     formItemList: formColumns,
