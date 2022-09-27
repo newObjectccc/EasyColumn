@@ -14,6 +14,7 @@ group:
 
 ```tsx
 import React from "react";
+import {Button} from 'antd'
 import { BasicTable } from "en-volant";
 import Mock from 'mockjs';
 import {withConfirmBasicFormHoC} from '../BasicForm/HOC'
@@ -39,7 +40,7 @@ const TableWithDefaultIndexColumn = React.forwardRef(({tableColumns = [], pagina
 export default () =>{
   
   const tableRef = React.useRef(null)
-  
+  const [rowSelection, setRowSelection] = React.useState({})
   const fetchData = (params) => {
     console.log('params ===> ', params)
     const data = Mock.mock({
@@ -85,18 +86,23 @@ export default () =>{
   ]
 
   return (
-    <TableWithDefaultIndexColumn
-      rowKey="id"
-      ref={tableRef}
-      apiFn={fetchData}
-      formProps={{
-        onSubmit: (val) => alert(JSON.stringify(val)),
-      }}
-      pagination={{onChange: (page, size) => console.log('page, size ===>', page, size)}}
-      formHoCs={[withConfirmBasicFormHoC]}
-      formColumns={formItems}
-      tableColumns={[{dataIndex: 'name', title: 'Name'}, {dataIndex: 'age', title: 'Age'}, {dataIndex: 'score', title: 'Score'}]}
-    />
+    <>
+      <Button onClick={() => tableRef.current.setSeletedRowKeys([1,2,3,4])} >点我选中1,2,3,4</Button>
+      <Button onClick={() => tableRef.current.resetPageStat(2, 20)} >点我跳转第二页，并显示20条</Button>
+      <TableWithDefaultIndexColumn
+        rowKey="id"
+        ref={tableRef}
+        apiFn={fetchData}
+        formProps={{
+          onSubmit: (val) => alert(JSON.stringify(val)),
+        }}
+        rowSelection={rowSelection}
+        pagination={{onChange: (page, size) => console.log('page, size ===>', page, size)}}
+        formHoCs={[withConfirmBasicFormHoC]}
+        formColumns={formItems}
+        tableColumns={[{dataIndex: 'name', title: 'Name'}, {dataIndex: 'age', title: 'Age'}, {dataIndex: 'score', title: 'Score'}]}
+      />
+    </>
   )
 }
 
@@ -180,7 +186,12 @@ export default () =>{
 <API hideTitle />
 
 ```javascript
- export interface BasicTablePropsType extends React.FunctionComponent {
+export interface BasicTablePropsType extends React.FunctionComponent {
+  /**
+   * @description      请求接口
+   * @default          (p: Object) => Promise<unkonwn[]>
+   */
+  rowKey: string | ((record: any) => string);
   /**
    * @description      请求接口
    * @default          (p: Object) => Promise<unkonwn[]>
@@ -210,19 +221,23 @@ export default () =>{
    * @description      渲染 BaiscForm 表单项，支持基于表单值请求 Table 数据
    * @default          FormItemType
    */
-  formColumns?: FormItemType;
+  formColumns?: FormItemType[];
   /**
    * @description      表格列的配置，同 antd Table 的  columns
-   * @default          ColumnsType
+   * @default          ColumnsType antd
    */
-  tableColumns?: ColumnsType;
+  tableColumns?: any;
+  /**
+   * @description      是否显示内置 ConfirmGroup 组件
+   * @default          undefined
+   */
+   formHoCs?: ((form: typeof BasicForm) => (props: any) => React.ReactElement<any>)[];
   /**
    * @description      支持所有 antd Table 的属性
    * @default          (p: Object) => Promise<unkonwn[]>
    */
   [key: string]: any;
 }
-
 ```
 
 [其他属性同 antd Table](https://ant.design/components/select-cn/#API)

@@ -1,10 +1,16 @@
+import type { Key } from "react";
 import React from "react";
 import { Table, Form } from "antd";
 import BasicForm from "../BasicForm";
 import type { BasicFormPropsType, FormItemType } from "../BasicForm"
-import { useTablePagination } from "./hook";
+import { useTablePagination, useTableRowSelection } from "./hook";
 
 export interface BasicTablePropsType extends React.FunctionComponent {
+  /**
+   * @description      请求接口
+   * @default          (p: Object) => Promise<unkonwn[]>
+   */
+  rowKey: string | ((record: any) => string);
   /**
    * @description      请求接口
    * @default          (p: Object) => Promise<unkonwn[]>
@@ -52,7 +58,7 @@ export interface BasicTablePropsType extends React.FunctionComponent {
   [key: string]: any;
 }
 
-const BasicTable = ({ formHoCs, apiFn, dataSource, formColumns, tableColumns, MiddleComponent, formProps, beforeRequestQueue = [], afterResponseQueue = [], children = [], ...restProps }: BasicTablePropsType, ref: React.Ref<unknown>) => {
+const BasicTable = ({rowKey = 'id', formHoCs, apiFn, dataSource, formColumns, tableColumns, MiddleComponent, formProps, beforeRequestQueue = [], afterResponseQueue = [], children = [], ...restProps }: BasicTablePropsType, ref: React.Ref<unknown>) => {
   // is Mouted
   const isMouted = React.useRef<boolean>(false);
   // 请求参数
@@ -64,7 +70,10 @@ const BasicTable = ({ formHoCs, apiFn, dataSource, formColumns, tableColumns, Mi
   // 使用 pagination 钩子
   const {pagination} = restProps
   const [pageNo, pageSize, mergedPagination, setPageStat] = useTablePagination(pagination)
-
+  // 使用 rowSelection 钩子
+  const {rowSelection} = restProps
+  const [mergedRowSelection, selectionsController] = useTableRowSelection(rowSelection, rowKey)
+  
   // 请求数据方法
   const fetchHandler = async () => {
     let fetchParams = {...apiParams, pageNo, pageSize}
@@ -97,25 +106,28 @@ const BasicTable = ({ formHoCs, apiFn, dataSource, formColumns, tableColumns, Mi
     if (!isMouted.current) {
       isMouted.current = true
     }
-    // 组件加载完成之后
+    // 组件加载完成之后再做下面的操作
     fetchHandler()
   }, [apiParams, pageNo, pageSize])
 
   React.useImperativeHandle(ref, () => ({
-    todo: setApiParams,
+    resetPageStat: (no?: number, size?: number): void => setPageStat(no, size),
+    setSeletedRowKeys: (keys: Key[]) => selectionsController.setRowKeys(keys),
   }))
 
   // 处理 Table 的 props
   const generateTableByMergedProps = React.useCallback(() => ({
     key: '#__table__',
+    rowKey,
     ...restProps,
+    rowSelection: mergedRowSelection,
     pagination: mergedPagination,
     columns: tableColumns,
     dataSource: tableSource as Array<any>,
-  }), [tableSource, tableColumns])
+  }), [mergedRowSelection, mergedPagination, tableColumns, tableSource])
 
   // 处理 Form 的 props
-  const generateFormByMergedProps = React.useCallback(() => ({
+  const generateFormByMergedProps = () => ({
     key: '#__form__',
     layout: 'inline',
     ...formProps,
@@ -123,6 +135,8 @@ const BasicTable = ({ formHoCs, apiFn, dataSource, formColumns, tableColumns, Mi
     onFinish: (values: {[key: string]: any}) => {
       // 重置页码为 1
       setPageStat(1)
+      // 清空已选中 rowKeys
+      selectionsController.setRowKeys([])
       // 监听  Form 值更新 apiParams
       setApiParams(values)
       // 向上触发
@@ -130,7 +144,7 @@ const BasicTable = ({ formHoCs, apiFn, dataSource, formColumns, tableColumns, Mi
     },
     formItemList: formColumns,
     form: formStore,
-  }), [formProps, formColumns])
+  })
 
   // generate BasicForm with HoCs
   const BasicFormMergedHoCs = React.useMemo(()=> {
