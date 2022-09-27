@@ -6,9 +6,9 @@ import ESLintPlugin from "eslint-webpack-plugin";
 import StylelintPlugin from "stylelint-webpack-plugin";
 
 export default defineConfig({
-  title: "en-volant",
-  favicon: "http://dohko.hw.shop.hualala.com/images/3f58b70b.gif",
-  logo: "http://dohko.hw.shop.hualala.com/images/3f58b70b.gif",
+  title: "easy-column",
+  favicon: "",
+  logo: "",
   outputPath: "docs-dist",
   mode: "site",
   // mfsu: {},
